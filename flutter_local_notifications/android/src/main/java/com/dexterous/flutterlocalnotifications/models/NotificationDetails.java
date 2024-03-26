@@ -129,6 +129,7 @@ public class NotificationDetails implements Serializable {
 
   public Integer id;
   public String title;
+  public Integer factor;
   public String body;
   public String icon;
   public String channelId = "Default_Channel_Id";
@@ -203,6 +204,7 @@ public class NotificationDetails implements Serializable {
     NotificationDetails notificationDetails = new NotificationDetails();
     notificationDetails.payload = (String) arguments.get(PAYLOAD);
     notificationDetails.id = (Integer) arguments.get(ID);
+    notificationDetails.factor (Integer) arguements.get(factor);
     notificationDetails.title = (String) arguments.get(TITLE);
     notificationDetails.body = (String) arguments.get(BODY);
     notificationDetails.scheduledDateTime = (String) arguments.get(SCHEDULED_DATE_TIME);

@@ -83,7 +83,8 @@ public class FlutterLocalNotificationsPlugin: NSObject, FlutterPlugin, UNUserNot
         case everyMinute
         case hourly
         case daily
-        case weekly
+        case weekly,
+        case monthly
     }
 
     var channel: FlutterMethodChannel

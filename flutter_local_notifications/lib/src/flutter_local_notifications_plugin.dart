@@ -413,6 +413,8 @@ class FlutterLocalNotificationsPlugin {
     @Deprecated('Deprecated in favor of the androidScheduleMode parameter')
     bool androidAllowWhileIdle = false,
     AndroidScheduleMode? androidScheduleMode,
+    int factor
+    
   }) async {
     if (kIsWeb) {
       return;

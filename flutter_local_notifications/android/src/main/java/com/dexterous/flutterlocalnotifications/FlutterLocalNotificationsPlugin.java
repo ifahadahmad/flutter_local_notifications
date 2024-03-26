@@ -90,6 +90,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.time.temporal.TemporalAdjusters;
+import java.time.LocalDate;
+
 
 import io.flutter.FlutterInjector;
 import io.flutter.embedding.engine.loader.FlutterLoader;
@@ -228,7 +231,9 @@ public class FlutterLocalNotificationsPlugin
 
   static void scheduleNextNotification(Context context, NotificationDetails notificationDetails) {
     try {
-      if (notificationDetails.scheduledNotificationRepeatFrequency != null) {
+      if(notificationDetails.monthlyType != null ){
+        zonedMonthlyScheduleNextNotification(context,notificationDetails);
+      }else if (notificationDetails.scheduledNotificationRepeatFrequency != null) {
         zonedScheduleNextNotification(context, notificationDetails);
       } else if (notificationDetails.matchDateTimeComponents != null) {
         zonedScheduleNextNotificationMatchingDateComponents(context, notificationDetails);
@@ -763,16 +768,16 @@ public class FlutterLocalNotificationsPlugin
     long repeatInterval = 0;
     switch (notificationDetails.repeatInterval) {
       case EveryMinute:
-        repeatInterval = 60000;
+        repeatInterval = 60000 * notificationDetails.factor;
         break;
       case Hourly:
-        repeatInterval = 60000 * 60;
+        repeatInterval = 60000 * 60 * notificationDetails.factor;
         break;
       case Daily:
-        repeatInterval = 60000 * 60 * 24;
+        repeatInterval = 60000 * 60 * 24 * notificationDetails.factor;
         break;
       case Weekly:
-        repeatInterval = 60000 * 60 * 24 * 7;
+        repeatInterval = 60000 * 60 * 24 * 7 * notificationDetails.factor;
         break;
       default:
         break;
@@ -1255,6 +1260,18 @@ public class FlutterLocalNotificationsPlugin
       notificationManagerCompat.notify(notificationDetails.id, notification);
     }
   }
+// fields to add now monthlyType, dateOfMonth, everyInterval, monthWeek, weekDay
+
+  private static void zonedMonthlyScheduleNextNotification(
+    Context context. NotificationDetails notificationDetials) {
+      String nextFireDate = getNextFireDateMonthly(notificationDetails);
+      if (nextFireDate == null){
+        return;
+      }
+    notificationDetails.scheduledDateTime = nextFireDate;
+    zonedScheduleNotification(context, notificationDetails, true);
+    }
+  )
 
   private static void zonedScheduleNextNotification(
       Context context, NotificationDetails notificationDetails) {
@@ -1276,6 +1293,67 @@ public class FlutterLocalNotificationsPlugin
     zonedScheduleNotification(context, notificationDetails, true);
   }
 
+  private static String getNextFireDateMonthly(NotificationDetails notificationDetails){
+        ZoneId zoneId = ZoneId.of(notificationDetails.timeZoneName);
+    ZonedDateTime scheduledDateTime =
+        ZonedDateTime.of(LocalDateTime.parse(notificationDetails.scheduledDateTime), zoneId);
+    ZonedDateTime now = ZonedDateTime.now(zoneId);
+
+    if(notificationDetails.monthlyType == MonthlyType.Date){
+          ZonedDateTime nextFireDate =
+        ZonedDateTime.of(
+            now.getYear(),
+            now.getMonthValue(),
+            notificationDetails.dateOfMonth,
+            scheduledDateTime.getHour(),
+            scheduledDateTime.getMinute(),
+            scheduledDateTime.getSecond(),
+            scheduledDateTime.getNano(),
+            zoneId).plusMonths(notificationDetails.everyInterval);
+    while (nextFireDate.isBefore(now)) {
+      // adjust to be a date in the future that matches the time
+      nextFireDate = nextFireDate.plusDays(1);
+    }
+    return DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(nextFireDate);
+
+    }else{
+          ZonedDateTime nextFireDate =
+        ZonedDateTime.of(
+            now.getYear(),
+            now.getMonthValue(),
+            now.getDayOfMonth(),
+            scheduledDateTime.getHour(),
+            scheduledDateTime.getMinute(),
+            scheduledDateTime.getSecond(),
+            scheduledDateTime.getNano(),
+            zoneId);
+         while (nextFireDate.isBefore(now)) {
+      // adjust to be a date in the future that matches the time
+      nextFireDate = nextFireDate.plusDays(1);
+    }
+      nextFireDate =  adjustToNthDayOfMonth(nextFireDate,notificationDetails.monthWeek,notificationDetails.weekDay);
+      return nextFireDate;
+    }
+  }
+  public static ZonedDateTime adjustToNthDayOfMonth(ZonedDateTime date, 
+                                                     int nthOccurrence, 
+                                                     DayOfWeek dayOfWeek) {
+
+        // Keep the year and month from the original date
+        int year = date.getYear();
+        Month month = date.getMonth();  
+
+
+        // Calculate the target date within the month
+        LocalDate targetDate = LocalDate.of(year, month, 1) 
+                                        .with(TemporalAdjusters.firstInMonth(dayOfWeek))
+                                        .plusWeeks(nthOccurrence - 1);
+
+        // Combine with time and zone from the original ZonedDateTime
+        return date.with(targetDate).withHour(date.getHour())
+                   .withMinute(date.getMinute())
+                   .withSecond(date.getSecond());
+    }
   private static String getNextFireDate(NotificationDetails notificationDetails) {
     if (notificationDetails.scheduledNotificationRepeatFrequency
         == ScheduledNotificationRepeatFrequency.Daily) {
