@@ -183,6 +183,11 @@ class AndroidFlutterLocalNotificationsPlugin
     AndroidNotificationDetails? notificationDetails, {
     required AndroidScheduleMode scheduleMode,
     String? payload,
+    MonthlyType? monthlyType,
+    int? everyInterval,
+    int? dateOfMonth,
+    WeekDay? weekDay,
+    int? monthWeek,
     DateTimeComponents? matchDateTimeComponents,
   }) async {
     validateId(id);
@@ -198,6 +203,13 @@ class AndroidFlutterLocalNotificationsPlugin
             _buildPlatformSpecifics(notificationDetails, scheduleMode),
         'payload': payload ?? '',
         ...scheduledDate.toMap(),
+        'everyInterval' : everyInterval,
+        'dateOfMonth' : dateOfMonth,
+        'monthWeek' : monthWeek,
+        if(monthlyType != null)
+          'monthlyType' : monthlyType.index,
+        if( weekDay != null )
+          'weekDay' : weekDay.index,
         if (matchDateTimeComponents != null)
           'matchDateTimeComponents': matchDateTimeComponents.index
       },
@@ -344,7 +356,7 @@ class AndroidFlutterLocalNotificationsPlugin
       'platformSpecifics':
           _buildPlatformSpecifics(notificationDetails, scheduleMode),
       'payload': payload ?? '',
-      'factor':factor ?? 1
+      'factor':factor
     });
   }
 

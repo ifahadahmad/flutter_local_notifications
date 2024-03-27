@@ -13,6 +13,13 @@ enum RepeatInterval {
   weekly
 }
 
+enum MonthyType {
+  date,
+  day
+
+}
+
+
 /// Details of a pending notification that has not been delivered.
 class PendingNotificationRequest {
   /// Constructs an instance of [PendingNotificationRequest].

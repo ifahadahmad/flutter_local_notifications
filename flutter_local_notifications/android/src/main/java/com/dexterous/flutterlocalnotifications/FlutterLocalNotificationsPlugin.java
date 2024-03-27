@@ -82,6 +82,7 @@ import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.DayOfWeek;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1326,33 +1327,30 @@ public class FlutterLocalNotificationsPlugin
             scheduledDateTime.getMinute(),
             scheduledDateTime.getSecond(),
             scheduledDateTime.getNano(),
-            zoneId);
+            zoneId).plusMonths(notificationDetails.everyInterval);
          while (nextFireDate.isBefore(now)) {
       // adjust to be a date in the future that matches the time
       nextFireDate = nextFireDate.plusDays(1);
     }
       nextFireDate =  adjustToNthDayOfMonth(nextFireDate,notificationDetails.monthWeek,notificationDetails.weekDay);
-      return nextFireDate;
+      return DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(nextFireDate);
     }
   }
-  public static ZonedDateTime adjustToNthDayOfMonth(ZonedDateTime date, 
-                                                     int nthOccurrence, 
-                                                     DayOfWeek dayOfWeek) {
+    public static ZonedDateTime adjustToNthDayOfMonth(ZonedDateTime date,
+                                                      Integer nthOccurrence,
+                                                      DayOfWeek dayOfWeek) {
 
         // Keep the year and month from the original date
-        int year = date.getYear();
-        Month month = date.getMonth();  
-
+        Integer year = date.getYear();
+        Month month = date.getMonth();
 
         // Calculate the target date within the month
-        LocalDate targetDate = LocalDate.of(year, month, 1) 
-                                        .with(TemporalAdjusters.firstInMonth(dayOfWeek))
-                                        .plusWeeks(nthOccurrence - 1);
+        LocalDate targetDate = LocalDate.of(year, month, 1)
+                .with(TemporalAdjusters.firstInMonth(dayOfWeek))
+                .plusWeeks(nthOccurrence - 1);
 
         // Combine with time and zone from the original ZonedDateTime
-        return date.with(targetDate).withHour(date.getHour())
-                   .withMinute(date.getMinute())
-                   .withSecond(date.getSecond());
+        return ZonedDateTime.of(targetDate, date.toLocalTime(), date.getZone());
     }
   private static String getNextFireDate(NotificationDetails notificationDetails) {
     if (notificationDetails.scheduledNotificationRepeatFrequency
@@ -1649,6 +1647,10 @@ public class FlutterLocalNotificationsPlugin
       if (notificationDetails.matchDateTimeComponents != null) {
         notificationDetails.scheduledDateTime =
             getNextFireDateMatchingDateTimeComponents(notificationDetails);
+      }
+      if(notificationDetails.monthlyType != null) {
+        notificationDetails.scheduledDateTime = 
+           getNextFireDateMonthly(notificationDetails);
       }
       try {
         zonedScheduleNotification(applicationContext, notificationDetails, true);

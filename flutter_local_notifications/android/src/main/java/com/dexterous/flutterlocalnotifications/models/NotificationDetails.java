@@ -16,6 +16,7 @@ import com.dexterous.flutterlocalnotifications.models.styles.StyleInformation;
 import com.dexterous.flutterlocalnotifications.utils.LongUtils;
 import com.google.gson.annotations.SerializedName;
 
+import java.time.DayOfWeek;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,13 @@ public class NotificationDetails implements Serializable {
   private static final String MILLISECONDS_SINCE_EPOCH = "millisecondsSinceEpoch";
   private static final String CALLED_AT = "calledAt";
   private static final String REPEAT_INTERVAL = "repeatInterval";
+  private static final String DATE_OF_MONTH = "dateOfMonth";
+  private static final String EVERY_INTERVAL = "everyInterval";
+  private static final String MONTH_WEEK = "monthWeek";
+  private static final String MONTHLY_TYPE = "monthlyType";
+  private static final String WEEK_DAY = "weekDay";
   private static final String REPEAT_TIME = "repeatTime";
+  private static final String FACTOR = "factor";
   private static final String PLATFORM_SPECIFICS = "platformSpecifics";
   private static final String AUTO_CANCEL = "autoCancel";
   private static final String ONGOING = "ongoing";
@@ -146,6 +153,11 @@ public class NotificationDetails implements Serializable {
   public NotificationStyle style;
   public StyleInformation styleInformation;
   public RepeatInterval repeatInterval;
+  public DayOfWeek weekDay;
+  public Integer dateOfMonth;
+  public Integer everyInterval;
+  public Integer monthWeek;
+  public MonthlyType monthlyType;
   public Time repeatTime;
   public Long millisecondsSinceEpoch;
   public Long calledAt;
@@ -204,7 +216,6 @@ public class NotificationDetails implements Serializable {
     NotificationDetails notificationDetails = new NotificationDetails();
     notificationDetails.payload = (String) arguments.get(PAYLOAD);
     notificationDetails.id = (Integer) arguments.get(ID);
-    notificationDetails.factor (Integer) arguements.get(factor);
     notificationDetails.title = (String) arguments.get(TITLE);
     notificationDetails.body = (String) arguments.get(BODY);
     notificationDetails.scheduledDateTime = (String) arguments.get(SCHEDULED_DATE_TIME);
@@ -227,6 +238,27 @@ public class NotificationDetails implements Serializable {
     if (arguments.containsKey(REPEAT_INTERVAL)) {
       notificationDetails.repeatInterval =
           RepeatInterval.values()[(Integer) arguments.get(REPEAT_INTERVAL)];
+    }
+    if (arguements.containsKey(WEEK_DAY)) {
+      notificationDetails.weekDay = 
+          DayOfWeek.values()[(Integer) arguements.get(WEEK_DAY)];
+    }
+    if (arguements.containsKey(FACTOR)) {
+      notificationDetails.factor = 
+          (Integer) arguements.get(FACTOR);
+    }
+    if (arguements.containsKey(DATE_OF_MONTH)){
+      notificationDetails.dateOfMonth = (Integer) arguements.get(DATE_OF_MONTH);
+    }
+    if (arguements.containsKey(EVERY_INTERVAL)){
+      notificationDetails.everyInterval = (Integer) arguements.get(EVERY_INTERVAL);
+    }
+    if (arguements.containsKey(MONTH_WEEK)){
+      notificationDetails.monthWeek = (Integer) arguements.get(MONTH_WEEK);
+    }
+    if (arguments.containsKey(MONTHLY_TYPE)) {
+      notificationDetails.monthlyType = 
+          MonthlyType.values()[(Integer) arguements.get(MONTHLY_TYPE)];
     }
     if (arguments.containsKey(REPEAT_TIME)) {
       @SuppressWarnings("unchecked")

@@ -343,6 +343,11 @@ class FlutterLocalNotificationsPlugin {
     bool androidAllowWhileIdle = false,
     AndroidScheduleMode? androidScheduleMode,
     String? payload,
+    MonthlyType? monthlyType,
+    int? everyInterval,
+    int? dateOfMonth,
+    WeekDay? weekDay,
+    int? monthWeek,
     DateTimeComponents? matchDateTimeComponents,
   }) async {
     if (kIsWeb) {
@@ -360,6 +365,11 @@ class FlutterLocalNotificationsPlugin {
               payload: payload,
               scheduleMode: _chooseScheduleMode(
                   androidScheduleMode, androidAllowWhileIdle),
+              monthlyType:monthlyType,
+              everyInterval:everyInterval,
+              dateOfMonth:dateOfMonth,
+              weekDay : weekDay,
+              monthWeek : monthWeek,
               matchDateTimeComponents: matchDateTimeComponents);
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       await resolvePlatformSpecificImplementation<
@@ -413,7 +423,7 @@ class FlutterLocalNotificationsPlugin {
     @Deprecated('Deprecated in favor of the androidScheduleMode parameter')
     bool androidAllowWhileIdle = false,
     AndroidScheduleMode? androidScheduleMode,
-    int factor
+    int factor=1
     
   }) async {
     if (kIsWeb) {
@@ -425,6 +435,7 @@ class FlutterLocalNotificationsPlugin {
           ?.periodicallyShow(id, title, body, repeatInterval,
               notificationDetails: notificationDetails.android,
               payload: payload,
+              factor: factor,
               scheduleMode: _chooseScheduleMode(
                   androidScheduleMode, androidAllowWhileIdle));
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {

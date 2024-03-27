@@ -42,3 +42,18 @@ enum DateTimeComponents {
   /// The date and time.
   dateAndTime,
 }
+
+enum WeekDay {
+  _,
+  monday,
+  tuesday,
+  wednesday,
+  thursday,
+  friday,
+  saturday,
+  sunday
+}
+enum MonthlyType {
+  date,
+  day
+}
