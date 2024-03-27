@@ -423,6 +423,7 @@ class FlutterLocalNotificationsPlugin {
     @Deprecated('Deprecated in favor of the androidScheduleMode parameter')
     bool androidAllowWhileIdle = false,
     AndroidScheduleMode? androidScheduleMode,
+    int? day,
     int factor=1
     
   }) async {
@@ -436,6 +437,7 @@ class FlutterLocalNotificationsPlugin {
               notificationDetails: notificationDetails.android,
               payload: payload,
               factor: factor,
+              day : day,
               scheduleMode: _chooseScheduleMode(
                   androidScheduleMode, androidAllowWhileIdle));
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {

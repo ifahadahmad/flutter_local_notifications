@@ -57,3 +57,13 @@ enum MonthlyType {
   date,
   day
 }
+enum CalendarDay {
+  _,
+  SUNDAY,
+  MONDAY,
+  TUESDAY,
+  WEDNESDAY,
+  THURSDAY,
+  FRIDAY,
+  SATURDAY
+}
