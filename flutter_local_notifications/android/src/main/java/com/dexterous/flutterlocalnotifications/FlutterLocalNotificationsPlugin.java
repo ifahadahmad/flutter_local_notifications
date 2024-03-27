@@ -1264,7 +1264,7 @@ public class FlutterLocalNotificationsPlugin
 // fields to add now monthlyType, dateOfMonth, everyInterval, monthWeek, weekDay
 
   private static void zonedMonthlyScheduleNextNotification(
-    Context context. NotificationDetails notificationDetials) {
+    Context context. NotificationDetails notificationDetails) {
       String nextFireDate = getNextFireDateMonthly(notificationDetails);
       if (nextFireDate == null){
         return;
