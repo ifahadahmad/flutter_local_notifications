@@ -239,26 +239,26 @@ public class NotificationDetails implements Serializable {
       notificationDetails.repeatInterval =
           RepeatInterval.values()[(Integer) arguments.get(REPEAT_INTERVAL)];
     }
-    if (arguements.containsKey(WEEK_DAY)) {
+    if (arguments.containsKey(WEEK_DAY)) {
       notificationDetails.weekDay = 
-          DayOfWeek.values()[(Integer) arguements.get(WEEK_DAY)];
+          DayOfWeek.values()[(Integer) arguments.get(WEEK_DAY)];
     }
-    if (arguements.containsKey(FACTOR)) {
+    if (arguments.containsKey(FACTOR)) {
       notificationDetails.factor = 
-          (Integer) arguements.get(FACTOR);
+          (Integer) arguments.get(FACTOR);
     }
-    if (arguements.containsKey(DATE_OF_MONTH)){
-      notificationDetails.dateOfMonth = (Integer) arguements.get(DATE_OF_MONTH);
+    if (arguments.containsKey(DATE_OF_MONTH)){
+      notificationDetails.dateOfMonth = (Integer) arguments.get(DATE_OF_MONTH);
     }
-    if (arguements.containsKey(EVERY_INTERVAL)){
-      notificationDetails.everyInterval = (Integer) arguements.get(EVERY_INTERVAL);
+    if (arguments.containsKey(EVERY_INTERVAL)){
+      notificationDetails.everyInterval = (Integer) arguments.get(EVERY_INTERVAL);
     }
-    if (arguements.containsKey(MONTH_WEEK)){
-      notificationDetails.monthWeek = (Integer) arguements.get(MONTH_WEEK);
+    if (arguments.containsKey(MONTH_WEEK)){
+      notificationDetails.monthWeek = (Integer) arguments.get(MONTH_WEEK);
     }
     if (arguments.containsKey(MONTHLY_TYPE)) {
       notificationDetails.monthlyType = 
-          MonthlyType.values()[(Integer) arguements.get(MONTHLY_TYPE)];
+          MonthlyType.values()[(Integer) arguments.get(MONTHLY_TYPE)];
     }
     if (arguments.containsKey(REPEAT_TIME)) {
       @SuppressWarnings("unchecked")
