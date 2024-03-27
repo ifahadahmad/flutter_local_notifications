@@ -1271,8 +1271,7 @@ public class FlutterLocalNotificationsPlugin
       }
     notificationDetails.scheduledDateTime = nextFireDate;
     zonedScheduleNotification(context, notificationDetails, true);
-    }
-  )
+  }
 
   private static void zonedScheduleNextNotification(
       Context context, NotificationDetails notificationDetails) {
