@@ -345,7 +345,7 @@ class AndroidFlutterLocalNotificationsPlugin
     String? payload,
     int? day,
     AndroidScheduleMode scheduleMode = AndroidScheduleMode.exact,
-    int factor
+    int factor = 1
   }) async {
     validateId(id);
     await _channel.invokeMethod('periodicallyShow', <String, Object?>{
