@@ -424,6 +424,7 @@ class FlutterLocalNotificationsPlugin {
     bool androidAllowWhileIdle = false,
     AndroidScheduleMode? androidScheduleMode,
     int? day,
+    Map<String,dynamic>? repeatTime,
     int factor=1
     
   }) async {
@@ -437,6 +438,7 @@ class FlutterLocalNotificationsPlugin {
               notificationDetails: notificationDetails.android,
               payload: payload,
               factor: factor,
+              repeatTime : repeatTime,
               day : day,
               scheduleMode: _chooseScheduleMode(
                   androidScheduleMode, androidAllowWhileIdle));

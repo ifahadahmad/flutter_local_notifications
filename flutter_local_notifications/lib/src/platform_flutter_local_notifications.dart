@@ -344,6 +344,7 @@ class AndroidFlutterLocalNotificationsPlugin
     AndroidNotificationDetails? notificationDetails,
     String? payload,
     int? day,
+    Map<String,dynamic>? repeatTime,
     AndroidScheduleMode scheduleMode = AndroidScheduleMode.exact,
     int factor = 1
   }) async {
@@ -358,6 +359,8 @@ class AndroidFlutterLocalNotificationsPlugin
           _buildPlatformSpecifics(notificationDetails, scheduleMode),
       'payload': payload ?? '',
       'factor':factor,
+      if(repeatTime!=null)
+        'repeatTime' : repeatTime,
       if(day!=null)
         'day' : day
     });
