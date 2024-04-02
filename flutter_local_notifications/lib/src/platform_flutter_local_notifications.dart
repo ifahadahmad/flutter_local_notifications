@@ -188,6 +188,7 @@ class AndroidFlutterLocalNotificationsPlugin
     int? dateOfMonth,
     WeekDay? weekDay,
     int? monthWeek,
+    TimeFromNamaz? timeFromNamaz,
     DateTimeComponents? matchDateTimeComponents,
   }) async {
     validateId(id);
@@ -206,6 +207,8 @@ class AndroidFlutterLocalNotificationsPlugin
         'everyInterval' : everyInterval,
         'dateOfMonth' : dateOfMonth,
         'monthWeek' : monthWeek,
+        if(timeFromNamaz != null)
+          'timeFromNamaz' : timeFromNamaz,
         if(monthlyType != null)
           'monthlyType' : monthlyType.index,
         if( weekDay != null )

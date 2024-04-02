@@ -234,7 +234,10 @@ public class FlutterLocalNotificationsPlugin
 
   static void scheduleNextNotification(Context context, NotificationDetails notificationDetails) {
     try {
-      if(notificationDetails.monthlyType != null ){
+      if(notificationDetails.repeatInterval!=null) {
+
+      }
+      else if(notificationDetails.monthlyType != null ){
         zonedMonthlyScheduleNextNotification(context,notificationDetails);
       }else if (notificationDetails.scheduledNotificationRepeatFrequency != null) {
         zonedScheduleNextNotification(context, notificationDetails);
@@ -1308,6 +1311,7 @@ public class FlutterLocalNotificationsPlugin
             now.getYear(),
             now.getMonthValue(),
             notificationDetails.dateOfMonth,
+            // pass namaz or else 
             scheduledDateTime.getHour(),
             scheduledDateTime.getMinute(),
             scheduledDateTime.getSecond(),

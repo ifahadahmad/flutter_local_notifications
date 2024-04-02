@@ -11,6 +11,7 @@ import 'platform_flutter_local_notifications.dart';
 import 'platform_specifics/android/schedule_mode.dart';
 import 'platform_specifics/ios/enums.dart';
 import 'types.dart';
+import 'helper_classes.dart';
 
 /// Provides cross-platform functionality for displaying local notifications.
 ///
@@ -344,10 +345,12 @@ class FlutterLocalNotificationsPlugin {
     AndroidScheduleMode? androidScheduleMode,
     String? payload,
     MonthlyType? monthlyType,
+    TimeFromNamaz? timeFromNamaz,
     int? everyInterval,
     int? dateOfMonth,
     WeekDay? weekDay,
     int? monthWeek,
+
     DateTimeComponents? matchDateTimeComponents,
   }) async {
     if (kIsWeb) {
@@ -368,6 +371,7 @@ class FlutterLocalNotificationsPlugin {
               monthlyType:monthlyType,
               everyInterval:everyInterval,
               dateOfMonth:dateOfMonth,
+              timeFromNamaz : timeFromNamaz,
               weekDay : weekDay,
               monthWeek : monthWeek,
               matchDateTimeComponents: matchDateTimeComponents);

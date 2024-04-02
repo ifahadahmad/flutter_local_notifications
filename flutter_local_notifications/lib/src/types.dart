@@ -67,3 +67,5 @@ enum CalendarDay {
   FRIDAY,
   SATURDAY
 }
+enum NamazTime { Fajr, Dhuhr, Asr, Maghrib, Isha }
+enum BeforeAfter { before, after }

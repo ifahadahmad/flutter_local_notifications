@@ -35,6 +35,7 @@ public class NotificationDetails implements Serializable {
   private static final String EVERY_INTERVAL = "everyInterval";
   private static final String MONTH_WEEK = "monthWeek";
   private static final String MONTHLY_TYPE = "monthlyType";
+  private static final String TIME_FROM_NAMAZ = "timeFromNamaz";
   private static final String WEEK_DAY = "weekDay";
   private static final String REPEAT_TIME = "repeatTime";
   private static final String FACTOR = "factor";
@@ -193,6 +194,7 @@ public class NotificationDetails implements Serializable {
   public int[] additionalFlags;
   public Boolean showWhen;
   public Boolean usesChronometer;
+  public TimeFromNamaz timeFromNamaz;
   public Boolean chronometerCountDown;
   public String scheduledDateTime;
   public String timeZoneName;
@@ -264,6 +266,11 @@ public class NotificationDetails implements Serializable {
       @SuppressWarnings("unchecked")
       Map<String, Object> repeatTimeParams = (Map<String, Object>) arguments.get(REPEAT_TIME);
       notificationDetails.repeatTime = Time.from(repeatTimeParams);
+    }
+    if (argument.containsKey(TIME_FROM_NAMAZ)) {
+      @SuppressWarnings("unchecked")
+      String timeFromNamaz = (String) argument.get(TIME_FROM_NAMAZ);
+      notificationDetails.timeFromNamaz = TimeFromNamaz.fromJson(timeFromNamaz);
     }
     if (arguments.containsKey(DAY)) {
       notificationDetails.day = (Integer) arguments.get(DAY);
