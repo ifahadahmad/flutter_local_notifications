@@ -267,7 +267,7 @@ public class NotificationDetails implements Serializable {
       Map<String, Object> repeatTimeParams = (Map<String, Object>) arguments.get(REPEAT_TIME);
       notificationDetails.repeatTime = Time.from(repeatTimeParams);
     }
-    if (argument.containsKey(TIME_FROM_NAMAZ)) {
+    if (arguments.containsKey(TIME_FROM_NAMAZ)) {
       @SuppressWarnings("unchecked")
       String timeFromNamaz = (String) arguments.get(TIME_FROM_NAMAZ);
       notificationDetails.timeFromNamaz = TimeFromNamaz.fromJson(timeFromNamaz);
