@@ -269,7 +269,7 @@ public class NotificationDetails implements Serializable {
     }
     if (argument.containsKey(TIME_FROM_NAMAZ)) {
       @SuppressWarnings("unchecked")
-      String timeFromNamaz = (String) argument.get(TIME_FROM_NAMAZ);
+      String timeFromNamaz = (String) arguments.get(TIME_FROM_NAMAZ);
       notificationDetails.timeFromNamaz = TimeFromNamaz.fromJson(timeFromNamaz);
     }
     if (arguments.containsKey(DAY)) {
