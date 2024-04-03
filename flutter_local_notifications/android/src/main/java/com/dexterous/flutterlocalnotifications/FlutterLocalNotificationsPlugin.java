@@ -1362,6 +1362,7 @@ public class FlutterLocalNotificationsPlugin
         // adjust to be a date in the future that matches the time
         nextFireDate = nextFireDate.plusDays(1);
       }
+      System.io.println(nextFireDate.toString());
         return DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(nextFireDate);
   }
       public static ZonedDateTime getClosestDayOfWeek(ZonedDateTime dateTime, DayOfWeek targetDayOfWeek) {
