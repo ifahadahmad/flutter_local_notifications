@@ -77,7 +77,7 @@ import com.dexterous.flutterlocalnotifications.utils.LongUtils;
 import com.dexterous.flutterlocalnotifications.utils.StringUtils;
 import com.dexterous.flutterlocalnotifications.models.MonthlyType;
 import com.dexterous.flutterlocalnotifications.models.RepeatInterval;
-
+import android.util.Log;
 import org.json.JSONObject;
 import org.json.JSONException;
 
@@ -1362,7 +1362,7 @@ public class FlutterLocalNotificationsPlugin
         // adjust to be a date in the future that matches the time
         nextFireDate = nextFireDate.plusDays(1);
       }
-      System.io.println(nextFireDate.toString());
+      Log.e(nextFireDate.toString());
         return DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(nextFireDate);
   }
       public static ZonedDateTime getClosestDayOfWeek(ZonedDateTime dateTime, DayOfWeek targetDayOfWeek) {
