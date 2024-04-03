@@ -345,7 +345,7 @@ class FlutterLocalNotificationsPlugin {
     AndroidScheduleMode? androidScheduleMode,
     String? payload,
     MonthlyType? monthlyType,
-    TimeFromNamaz? timeFromNamaz,
+    String? timeFromNamaz,
     int? everyInterval,
     int? dateOfMonth,
     WeekDay? weekDay,

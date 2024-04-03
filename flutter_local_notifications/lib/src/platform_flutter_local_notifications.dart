@@ -188,7 +188,7 @@ class AndroidFlutterLocalNotificationsPlugin
     int? dateOfMonth,
     WeekDay? weekDay,
     int? monthWeek,
-    TimeFromNamaz? timeFromNamaz,
+    String? timeFromNamaz,
     DateTimeComponents? matchDateTimeComponents,
     RepeatInterval? repeatInterval,
     int? day
