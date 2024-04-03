@@ -1348,11 +1348,13 @@ public class FlutterLocalNotificationsPlugin
       nextFireDate = nextFireDate.plusDays(notificationDetails.everyInterval);
     }else if(notificationDetails.repeatInterval == RepeatInterval.Weekly) {
       nextFireDate = nextFireDate.plusWeeks(notificationDetails.everyInterval);
+      nextFireDate = getClosestDayOfWeek(nextFireDate,notificationDetails.weekDay);
     }else if(notificationDetails.repeatInterval == RepeatInterval.Montly){
           if(notificationDetails.monthlyType == MonthlyType.Date){
           nextFireDate = nextFireDate.withDayOfMonth(notificationDetails.dateOfMonth).plusMonths(notificationDetails.everyInterval);
       }else{
             nextFireDate = nextFireDate.plusMonths(notificationDetails.everyInterval);
+            // nextFireDate = nextFireDate.with(TemporalAdjusters.dayOfWeekInMonth(notificationDetails.monthWeek, notificationDetails.weekDay));
            nextFireDate =  adjustToNthDayOfMonth(nextFireDate,notificationDetails.monthWeek,notificationDetails.weekDay);
       }
     }
@@ -1362,6 +1364,25 @@ public class FlutterLocalNotificationsPlugin
       }
         return DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(nextFireDate);
   }
+      public static ZonedDateTime getClosestDayOfWeek(ZonedDateTime dateTime, DayOfWeek targetDayOfWeek) {
+        DayOfWeek currentDayOfWeek = dateTime.getDayOfWeek();
+        int daysUntilTarget = targetDayOfWeek.getValue() - currentDayOfWeek.getValue();
+        if(daysUntilTarget == 0)
+          return dateTime;
+        if (daysUntilTarget > 3) {
+            // Use previous if the target day is more than 3 days away
+            return dateTime.with(TemporalAdjusters.previous(targetDayOfWeek));
+        } else if (daysUntilTarget < -3) {
+            // Use next if the target day is more than 3 days behind
+            return dateTime.with(TemporalAdjusters.next(targetDayOfWeek));
+        } else if (daysUntilTarget > 0) {
+            // Use next if the target day is on or after the current day
+            return dateTime.with(TemporalAdjusters.next(targetDayOfWeek));
+        } else {
+            // Use previous if the target day is before the current day
+            return dateTime.with(TemporalAdjusters.previous(targetDayOfWeek));
+        }
+    }
     public static ZonedDateTime adjustToNthDayOfMonth(ZonedDateTime date,
                                                       Integer nthOccurrence,
                                                       DayOfWeek dayOfWeek) {
