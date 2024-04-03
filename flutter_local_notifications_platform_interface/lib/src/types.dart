@@ -10,7 +10,9 @@ enum RepeatInterval {
   daily,
 
   /// Weekly interval.
-  weekly
+  weekly,
+
+  monthly
 }
 
 enum MonthyType {

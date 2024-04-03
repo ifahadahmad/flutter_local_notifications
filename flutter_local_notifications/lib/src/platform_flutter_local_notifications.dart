@@ -209,7 +209,7 @@ class AndroidFlutterLocalNotificationsPlugin
         'dateOfMonth' : dateOfMonth,
         'monthWeek' : monthWeek,
         if(repeatInterval != null)
-          'repeatInterval' : repeatInterval,
+          'repeatInterval' : repeatInterval.index,
         if(timeFromNamaz != null)
           'timeFromNamaz' : timeFromNamaz,
         if(monthlyType != null)
