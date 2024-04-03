@@ -24,23 +24,3 @@ public class TimeFromNamaz {
         return gson.fromJson(json, TimeFromNamaz.class);
     }
 }
-
-enum NamazTime {
-    @SerializedName("NamazTime.Fajr")
-    FAJR,
-    @SerializedName("NamazTime.Dhuhr")
-    DHUHR,
-    @SerializedName("NamazTime.Asr")
-    ASR,
-    @SerializedName("NamazTime.Maghrib")
-    MAGHRIB,
-    @SerializedName("NamazTime.Isha")
-    ISHA
-}
-
-enum BeforeAfter {
-    @SerializedName("BeforeAfter.before")
-    BEFORE,
-    @SerializedName("BeforeAfter.after")
-    AFTER
-}

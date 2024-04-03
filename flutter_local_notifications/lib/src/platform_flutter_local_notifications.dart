@@ -190,6 +190,7 @@ class AndroidFlutterLocalNotificationsPlugin
     int? monthWeek,
     TimeFromNamaz? timeFromNamaz,
     DateTimeComponents? matchDateTimeComponents,
+    RepeatInterval? repeatInterval
   }) async {
     validateId(id);
     validateDateIsInTheFuture(scheduledDate, matchDateTimeComponents);
@@ -207,6 +208,8 @@ class AndroidFlutterLocalNotificationsPlugin
         'everyInterval' : everyInterval,
         'dateOfMonth' : dateOfMonth,
         'monthWeek' : monthWeek,
+        if(repeatInterval != null)
+          'repeatInterval' : repeatInterval,
         if(timeFromNamaz != null)
           'timeFromNamaz' : timeFromNamaz,
         if(monthlyType != null)

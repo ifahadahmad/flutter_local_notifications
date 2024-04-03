@@ -50,6 +50,8 @@ import androidx.core.graphics.drawable.IconCompat;
 import com.dexterous.flutterlocalnotifications.isolate.IsolatePreferences;
 import com.dexterous.flutterlocalnotifications.models.BitmapSource;
 import com.dexterous.flutterlocalnotifications.models.DateTimeComponents;
+import com.dexterous.flutterlocalnotifications.models.BeforeAfter;
+import com.dexterous.flutterlocalnotifications.models.NamazTime;
 import com.dexterous.flutterlocalnotifications.models.IconSource;
 import com.dexterous.flutterlocalnotifications.models.MessageDetails;
 import com.dexterous.flutterlocalnotifications.models.NotificationAction;
@@ -60,6 +62,7 @@ import com.dexterous.flutterlocalnotifications.models.NotificationChannelGroupDe
 import com.dexterous.flutterlocalnotifications.models.NotificationDetails;
 import com.dexterous.flutterlocalnotifications.models.NotificationStyle;
 import com.dexterous.flutterlocalnotifications.models.PersonDetails;
+import com.dexterous.flutterlocalnotifications.models.TimeFromNamaz;
 import com.dexterous.flutterlocalnotifications.models.ScheduleMode;
 import com.dexterous.flutterlocalnotifications.models.ScheduledNotificationRepeatFrequency;
 import com.dexterous.flutterlocalnotifications.models.SoundSource;
@@ -73,6 +76,10 @@ import com.dexterous.flutterlocalnotifications.utils.BooleanUtils;
 import com.dexterous.flutterlocalnotifications.utils.LongUtils;
 import com.dexterous.flutterlocalnotifications.utils.StringUtils;
 import com.dexterous.flutterlocalnotifications.models.MonthlyType;
+import com.dexterous.flutterlocalnotifications.models.RepeatInterval;
+
+import org.json.JSONObject;
+import org.json.JSONException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -234,11 +241,9 @@ public class FlutterLocalNotificationsPlugin
 
   static void scheduleNextNotification(Context context, NotificationDetails notificationDetails) {
     try {
-      if(notificationDetails.repeatInterval!=null) {
-
-      }
-      else if(notificationDetails.monthlyType != null ){
-        zonedMonthlyScheduleNextNotification(context,notificationDetails);
+      
+      else if(notificationDetails.repeatInterval != null ){
+        zonedRepeatScheduleNextNotification(context,notificationDetails);
       }else if (notificationDetails.scheduledNotificationRepeatFrequency != null) {
         zonedScheduleNextNotification(context, notificationDetails);
       } else if (notificationDetails.matchDateTimeComponents != null) {
@@ -1269,9 +1274,9 @@ public class FlutterLocalNotificationsPlugin
   }
 // fields to add now monthlyType, dateOfMonth, everyInterval, monthWeek, weekDay
 
-  private static void zonedMonthlyScheduleNextNotification(
+  private static void zonedRepeatScheduleNextNotification(
     Context context, NotificationDetails notificationDetails) {
-      String nextFireDate = getNextFireDateMonthly(notificationDetails);
+      String nextFireDate = getNextFireDateRepeat(notificationDetails);
       if (nextFireDate == null){
         return;
       }
@@ -1299,32 +1304,12 @@ public class FlutterLocalNotificationsPlugin
     zonedScheduleNotification(context, notificationDetails, true);
   }
 
-  private static String getNextFireDateMonthly(NotificationDetails notificationDetails){
+  private static String getNextFireDateRepeat(NotificationDetails notificationDetails){
         ZoneId zoneId = ZoneId.of(notificationDetails.timeZoneName);
     ZonedDateTime scheduledDateTime =
         ZonedDateTime.of(LocalDateTime.parse(notificationDetails.scheduledDateTime), zoneId);
     ZonedDateTime now = ZonedDateTime.now(zoneId);
-
-    if(notificationDetails.monthlyType == MonthlyType.Date){
-          ZonedDateTime nextFireDate =
-        ZonedDateTime.of(
-            now.getYear(),
-            now.getMonthValue(),
-            notificationDetails.dateOfMonth,
-            // pass namaz or else 
-            scheduledDateTime.getHour(),
-            scheduledDateTime.getMinute(),
-            scheduledDateTime.getSecond(),
-            scheduledDateTime.getNano(),
-            zoneId).plusMonths(notificationDetails.everyInterval);
-    while (nextFireDate.isBefore(now)) {
-      // adjust to be a date in the future that matches the time
-      nextFireDate = nextFireDate.plusDays(1);
-    }
-    return DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(nextFireDate);
-
-    }else{
-          ZonedDateTime nextFireDate =
+    ZonedDateTime nextFireDate =
         ZonedDateTime.of(
             now.getYear(),
             now.getMonthValue(),
@@ -1333,14 +1318,49 @@ public class FlutterLocalNotificationsPlugin
             scheduledDateTime.getMinute(),
             scheduledDateTime.getSecond(),
             scheduledDateTime.getNano(),
-            zoneId).plusMonths(notificationDetails.everyInterval);
-         while (nextFireDate.isBefore(now)) {
-      // adjust to be a date in the future that matches the time
-      nextFireDate = nextFireDate.plusDays(1);
+            zoneId);
+    if(notificationDetails.timeFromNamaz != null) {
+      SharedPreferences sharedPreferences =
+        applicationContext.getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE);
+      String jsonString = sharedPreferences.getString("flutter." + "namazTime", "");
+      if(jsonString!=null){
+        try{
+          JSONObject json = new JSONObject(jsonString);
+          if(json!=null){
+            String timeString = json.getString(notificationDetails.timeFromNamaz.namazTime.name());
+            Integer namazHour = Integer.parseInt(timeString.split(":")[0]);
+            Integer namazMinutes = Integer.parseInt(timeString.split(":")[1]);
+            Integer minutes = notificationDetails.timeFromNamaz.minutes;
+            Integer hours = notificationDetails.timeFromNamaz.hours;
+            nextFireDate = nextFireDate.withHour(namazHour).withMinute(namazMinutes);
+            if (notificationDetails.timeFromNamaz.beforeAfter == BeforeAfter.BEFORE) {
+               nextFireDate = nextFireDate.minusHours(hours).minusMinutes(minutes);
+            }else {
+              nextFireDate = nextFireDate.plusHours(hours).plusMinutes(minutes);
+            }
+          }
+        } catch(JSONException e){
+          e.printStackTrace();
+        }
+      }
     }
-      nextFireDate =  adjustToNthDayOfMonth(nextFireDate,notificationDetails.monthWeek,notificationDetails.weekDay);
-      return DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(nextFireDate);
+    if(notificationDetails.repeatInterval == RepeatInterval.Daily) {
+      nextFireDate = nextFireDate.plusDays(notificationDetails.everyInterval);
+    }else if(notificationDetails.repeatInterval == RepeatInterval.Weekly) {
+      nextFireDate = nextFireDate.plusWeeks(notificationDetails.everyInterval);
+    }else if(notificationDetails.repeatInterval == RepeatInterval.Montly){
+          if(notificationDetails.monthlyType == MonthlyType.Date){
+          nextFireDate = nextFireDate.withDayOfMonth(notificationDetails.dateOfMonth).plusMonths(notificationDetails.everyInterval);
+      }else{
+            nextFireDate = nextFireDate.plusMonths(notificationDetails.everyInterval);
+           nextFireDate =  adjustToNthDayOfMonth(nextFireDate,notificationDetails.monthWeek,notificationDetails.weekDay);
+      }
     }
+    while (nextFireDate.isBefore(now)) {
+        // adjust to be a date in the future that matches the time
+        nextFireDate = nextFireDate.plusDays(1);
+      }
+        return DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(nextFireDate);
   }
     public static ZonedDateTime adjustToNthDayOfMonth(ZonedDateTime date,
                                                       Integer nthOccurrence,

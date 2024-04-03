@@ -350,7 +350,7 @@ class FlutterLocalNotificationsPlugin {
     int? dateOfMonth,
     WeekDay? weekDay,
     int? monthWeek,
-
+    RepeatInterval? repeatInterval,
     DateTimeComponents? matchDateTimeComponents,
   }) async {
     if (kIsWeb) {
@@ -373,6 +373,7 @@ class FlutterLocalNotificationsPlugin {
               dateOfMonth:dateOfMonth,
               timeFromNamaz : timeFromNamaz,
               weekDay : weekDay,
+              repeatInterval:repeatInterval,
               monthWeek : monthWeek,
               matchDateTimeComponents: matchDateTimeComponents);
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
