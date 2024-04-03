@@ -1276,7 +1276,7 @@ public class FlutterLocalNotificationsPlugin
 
   private static void zonedRepeatScheduleNextNotification(
     Context context, NotificationDetails notificationDetails) {
-      String nextFireDate = getNextFireDateRepeat(notificationDetails);
+      String nextFireDate = getNextFireDateRepeat(context,notificationDetails);
       if (nextFireDate == null){
         return;
       }
@@ -1304,7 +1304,7 @@ public class FlutterLocalNotificationsPlugin
     zonedScheduleNotification(context, notificationDetails, true);
   }
 
-  private static String getNextFireDateRepeat(NotificationDetails notificationDetails){
+  private static String getNextFireDateRepeat(Context context, NotificationDetails notificationDetails){
         ZoneId zoneId = ZoneId.of(notificationDetails.timeZoneName);
     ZonedDateTime scheduledDateTime =
         ZonedDateTime.of(LocalDateTime.parse(notificationDetails.scheduledDateTime), zoneId);
@@ -1321,7 +1321,7 @@ public class FlutterLocalNotificationsPlugin
             zoneId);
     if(notificationDetails.timeFromNamaz != null) {
       SharedPreferences sharedPreferences =
-        applicationContext.getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE);
+        context.getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE);
       String jsonString = sharedPreferences.getString("flutter." + "namazTime", "");
       if(jsonString!=null){
         try{
@@ -1349,7 +1349,7 @@ public class FlutterLocalNotificationsPlugin
     }else if(notificationDetails.repeatInterval == RepeatInterval.Weekly) {
       nextFireDate = nextFireDate.plusWeeks(notificationDetails.everyInterval);
       nextFireDate = getClosestDayOfWeek(nextFireDate,notificationDetails.weekDay);
-    }else if(notificationDetails.repeatInterval == RepeatInterval.Montly){
+    }else if(notificationDetails.repeatInterval == RepeatInterval.Monthly){
           if(notificationDetails.monthlyType == MonthlyType.Date){
           nextFireDate = nextFireDate.withDayOfMonth(notificationDetails.dateOfMonth).plusMonths(notificationDetails.everyInterval);
       }else{
@@ -1697,7 +1697,7 @@ public class FlutterLocalNotificationsPlugin
       }
       if(notificationDetails.monthlyType != null) {
         notificationDetails.scheduledDateTime = 
-           getNextFireDateRepeat(notificationDetails);
+           getNextFireDateRepeat(applicationContext,notificationDetails);
       }
       try {
         zonedScheduleNotification(applicationContext, notificationDetails, true);

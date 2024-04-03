@@ -3,7 +3,7 @@ import com.google.gson.annotations.SerializedName;
 import androidx.annotation.Keep;
 
 @Keep
-enum BeforeAfter {
+public enum BeforeAfter {
     @SerializedName("BeforeAfter.before")
     BEFORE,
     @SerializedName("BeforeAfter.after")

@@ -6,16 +6,16 @@ import com.google.gson.annotations.SerializedName;
 @Keep
 public class TimeFromNamaz {
     @SerializedName("namazTime")
-    private NamazTime namazTime;
+    public NamazTime namazTime;
 
     @SerializedName("beforeAfter")
-    private BeforeAfter beforeAfter;
+    public BeforeAfter beforeAfter;
 
     @SerializedName("minutes")
-    private Integer minutes;
+    public Integer minutes;
 
     @SerializedName("hours")
-    private Integer hours;
+    public Integer hours;
 
     // Getters and setters
 

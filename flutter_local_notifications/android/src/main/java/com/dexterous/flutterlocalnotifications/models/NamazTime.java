@@ -3,7 +3,7 @@ import com.google.gson.annotations.SerializedName;
 import androidx.annotation.Keep;
 
 @Keep
-enum NamazTime {
+public enum NamazTime {
     @SerializedName("NamazTime.Fajr")
     Fajr,
     @SerializedName("NamazTime.Dhuhr")
