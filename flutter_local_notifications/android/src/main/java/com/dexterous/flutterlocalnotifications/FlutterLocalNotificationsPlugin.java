@@ -1697,7 +1697,7 @@ public class FlutterLocalNotificationsPlugin
       }
       if(notificationDetails.monthlyType != null) {
         notificationDetails.scheduledDateTime = 
-           getNextFireDateMonthly(notificationDetails);
+           getNextFireDateRepeat(notificationDetails);
       }
       try {
         zonedScheduleNotification(applicationContext, notificationDetails, true);
