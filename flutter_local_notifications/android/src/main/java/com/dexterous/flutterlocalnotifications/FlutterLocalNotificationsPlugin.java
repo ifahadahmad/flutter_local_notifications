@@ -242,7 +242,7 @@ public class FlutterLocalNotificationsPlugin
   static void scheduleNextNotification(Context context, NotificationDetails notificationDetails) {
     try {
       
-      else if(notificationDetails.repeatInterval != null ){
+       if(notificationDetails.repeatInterval != null ){
         zonedRepeatScheduleNextNotification(context,notificationDetails);
       }else if (notificationDetails.scheduledNotificationRepeatFrequency != null) {
         zonedScheduleNextNotification(context, notificationDetails);
