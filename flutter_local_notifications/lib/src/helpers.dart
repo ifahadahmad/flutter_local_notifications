@@ -12,6 +12,8 @@ void validateDateIsInTheFuture(
   if (matchDateTimeComponents != null) {
     return;
   }
+  print("this is the scheduled Date $scheduledDate");
+  print("this is the now time ${clock.now()}");
   if (scheduledDate.isBefore(clock.now())) {
     throw ArgumentError.value(
         scheduledDate, 'scheduledDate', 'Must be a date in the future');
