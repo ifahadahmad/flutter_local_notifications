@@ -1347,7 +1347,7 @@ public class FlutterLocalNotificationsPlugin
     if(notificationDetails.repeatInterval == RepeatInterval.Daily) {
       nextFireDate = nextFireDate.plusMinutes(notificationDetails.everyInterval);
     }else if(notificationDetails.repeatInterval == RepeatInterval.Weekly) {
-      nextFireDate = nextFireDate.plusWeeks(notificationDetails.everyInterval);
+      nextFireDate = nextFireDate.plusMinutes(notificationDetails.everyInterval);
       nextFireDate = getClosestDayOfWeek(nextFireDate,notificationDetails.weekDay);
     }else if(notificationDetails.repeatInterval == RepeatInterval.Monthly){
           if(notificationDetails.monthlyType == MonthlyType.Date){
