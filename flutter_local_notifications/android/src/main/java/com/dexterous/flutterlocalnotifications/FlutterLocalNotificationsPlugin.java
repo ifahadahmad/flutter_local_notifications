@@ -1309,6 +1309,7 @@ public class FlutterLocalNotificationsPlugin
     ZonedDateTime scheduledDateTime =
         ZonedDateTime.of(LocalDateTime.parse(notificationDetails.scheduledDateTime), zoneId);
     ZonedDateTime now = ZonedDateTime.now(zoneId);
+    
     ZonedDateTime nextFireDate =
         ZonedDateTime.of(
             now.getYear(),
@@ -1319,6 +1320,8 @@ public class FlutterLocalNotificationsPlugin
             scheduledDateTime.getSecond(),
             scheduledDateTime.getNano(),
             zoneId);
+    Log.e("minutet","this is scheduleTime way way before");
+    Log.e("minutet",nextFireDate.toString());
     if(notificationDetails.timeFromNamaz != null) {
       SharedPreferences sharedPreferences =
         context.getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE);
