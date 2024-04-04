@@ -1336,6 +1336,7 @@ public class FlutterLocalNotificationsPlugin
             Integer minutes = notificationDetails.timeFromNamaz.minutes;
             Integer hours = notificationDetails.timeFromNamaz.hours;
             nextFireDate = nextFireDate.withHour(namazHour).withMinute(namazMinutes);
+            Log.e("minutet","this is Namaz Hour and Minutes "+namazHour+" "+namazMinutes);
             if (notificationDetails.timeFromNamaz.beforeAfter == BeforeAfter.BEFORE) {
                nextFireDate = nextFireDate.minusHours(hours).minusMinutes(minutes);
             }else {
