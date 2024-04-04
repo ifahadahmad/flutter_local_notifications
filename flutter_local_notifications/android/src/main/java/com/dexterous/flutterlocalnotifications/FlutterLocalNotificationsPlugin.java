@@ -1353,6 +1353,8 @@ public class FlutterLocalNotificationsPlugin
         Log.e("minutet","this is scheduleTime before");
     Log.e("minutet",nextFireDate.toString());
       nextFireDate = nextFireDate.plusMinutes(notificationDetails.everyInterval);
+      Log.e("minutet","this is Intermeddiate After");
+      Log.e("minutet",nextFireDate.toString());    
       nextFireDate = getClosestDayOfWeek(nextFireDate,notificationDetails.weekDay);
           Log.e("minutet","this is scheduleTime After");
       Log.e("minutet",nextFireDate.toString());
