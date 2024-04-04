@@ -233,7 +233,7 @@ public class FlutterLocalNotificationsPlugin
           scheduleNotification(context, notificationDetails, false);
         }
       } catch (ExactAlarmPermissionException e) {
-        Log.e(TAG, e.getMessage());
+        
         removeNotificationFromCache(context, notificationDetails.id);
       }
     }
@@ -254,7 +254,7 @@ public class FlutterLocalNotificationsPlugin
         removeNotificationFromCache(context, notificationDetails.id);
       }
     } catch (ExactAlarmPermissionException e) {
-      Log.e(TAG, e.getMessage());
+      
       removeNotificationFromCache(context, notificationDetails.id);
     }
   }
@@ -1320,8 +1320,8 @@ public class FlutterLocalNotificationsPlugin
             scheduledDateTime.getSecond(),
             scheduledDateTime.getNano(),
             zoneId);
-    Log.e("minutet","this is scheduleTime way way before");
-    Log.e("minutet",nextFireDate.toString());
+    
+    
     if(notificationDetails.timeFromNamaz != null) {
       SharedPreferences sharedPreferences =
         context.getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE);
@@ -1336,7 +1336,7 @@ public class FlutterLocalNotificationsPlugin
             Integer minutes = notificationDetails.timeFromNamaz.minutes;
             Integer hours = notificationDetails.timeFromNamaz.hours;
             nextFireDate = nextFireDate.withHour(namazHour).withMinute(namazMinutes);
-            Log.e("minutet","this is Namaz Hour and Minutes "+namazHour+" "+namazMinutes);
+            
             if (notificationDetails.timeFromNamaz.beforeAfter == BeforeAfter.BEFORE) {
                nextFireDate = nextFireDate.minusHours(hours).minusMinutes(minutes);
             }else {
@@ -1349,21 +1349,21 @@ public class FlutterLocalNotificationsPlugin
       }
     }
     if(notificationDetails.repeatInterval == RepeatInterval.Daily) {
-      nextFireDate = nextFireDate.plusMinutes(notificationDetails.everyInterval);
+      nextFireDate = nextFireDate.plusDays(notificationDetails.everyInterval);
     }else if(notificationDetails.repeatInterval == RepeatInterval.Weekly) {
-        Log.e("minutet","this is scheduleTime before");
-    Log.e("minutet",nextFireDate.toString());
-      nextFireDate = nextFireDate.plusMinutes(notificationDetails.everyInterval);
-      Log.e("minutet","this is Intermeddiate After");
-      Log.e("minutet",nextFireDate.toString());    
+        
+    
+      nextFireDate = nextFireDate.plusWeeks(notificationDetails.everyInterval);
+      
+          
       nextFireDate = getClosestDayOfWeek(nextFireDate,notificationDetails.weekDay);
-          Log.e("minutet","this is scheduleTime After");
-      Log.e("minutet",nextFireDate.toString());
-      Log.e("minutet",notificationDetails.everyInterval.toString());
+          
+      
+      
 
     }else if(notificationDetails.repeatInterval == RepeatInterval.Monthly){
           if(notificationDetails.monthlyType == MonthlyType.Date){
-          nextFireDate = nextFireDate.withDayOfMonth(notificationDetails.dateOfMonth).plusMonths(notificationDetails.everyInterval);
+          nextFireDate = nextFireDate.plusMonths(notificationDetails.everyInterval).withDayOfMonth(notificationDetails.dateOfMonth);
       }else{
             nextFireDate = nextFireDate.plusMonths(notificationDetails.everyInterval);
             // nextFireDate = nextFireDate.with(TemporalAdjusters.dayOfWeekInMonth(notificationDetails.monthWeek, notificationDetails.weekDay));
@@ -1382,8 +1382,8 @@ public class FlutterLocalNotificationsPlugin
       public static ZonedDateTime getClosestDayOfWeek(ZonedDateTime dateTime, DayOfWeek targetDayOfWeek) {
         DayOfWeek currentDayOfWeek = dateTime.getDayOfWeek();
         int daysUntilTarget = targetDayOfWeek.getValue() - currentDayOfWeek.getValue();
-        Log.e("minutet","This is TargetDOW " + targetDayOfWeek.getValue());
-        Log.e("minutet","This is NowDOW " + currentDayOfWeek.getValue());
+        
+        
         if(daysUntilTarget == 0)
           return dateTime;
         if (daysUntilTarget > 3) {
