@@ -1381,6 +1381,8 @@ public class FlutterLocalNotificationsPlugin
       public static ZonedDateTime getClosestDayOfWeek(ZonedDateTime dateTime, DayOfWeek targetDayOfWeek) {
         DayOfWeek currentDayOfWeek = dateTime.getDayOfWeek();
         int daysUntilTarget = targetDayOfWeek.getValue() - currentDayOfWeek.getValue();
+        Log.e("minutet","This is TargetDOW " + targetDayOfWeek.getValue().toString());
+        Log.e("minutet","This is NowDOW " + currentDayOfWeek.getValue().toString());
         if(daysUntilTarget == 0)
           return dateTime;
         if (daysUntilTarget > 3) {
