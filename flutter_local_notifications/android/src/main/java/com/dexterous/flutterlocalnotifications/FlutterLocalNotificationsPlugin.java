@@ -1358,10 +1358,16 @@ public class FlutterLocalNotificationsPlugin
            nextFireDate =  adjustToNthDayOfMonth(nextFireDate,notificationDetails.monthWeek,notificationDetails.weekDay);
       }
     }
+    Log.e("minutet","this is Zone Id " + zoneId);
+    Log.e("minutet","this is now ");
+    Log.e("minutet",now.toString());
+    Log.e("minutet","this is scheduleTime before");
+    Log.e("minutet",nextFireDate.toString());
     while (nextFireDate.isBefore(now)) {
         // adjust to be a date in the future that matches the time
         nextFireDate = nextFireDate.plusDays(1);
       }
+    Log.e("minutet","this is scheduleTime After");
       Log.e("minutet",nextFireDate.toString());
         return DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(nextFireDate);
   }
