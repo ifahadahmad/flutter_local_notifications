@@ -243,7 +243,7 @@ public class NotificationDetails implements Serializable {
     }
     if (arguments.containsKey(WEEK_DAY)) {
       notificationDetails.weekDay = 
-          DayOfWeek.values()[(Integer) arguments.get(WEEK_DAY)];
+          DayOfWeek.of((Integer) arguments.get(WEEK_DAY));
     }
     if (arguments.containsKey(FACTOR)) {
       notificationDetails.factor = 
