@@ -1350,8 +1350,14 @@ public class FlutterLocalNotificationsPlugin
     if(notificationDetails.repeatInterval == RepeatInterval.Daily) {
       nextFireDate = nextFireDate.plusMinutes(notificationDetails.everyInterval);
     }else if(notificationDetails.repeatInterval == RepeatInterval.Weekly) {
+        Log.e("minutet","this is scheduleTime before");
+    Log.e("minutet",nextFireDate.toString());
       nextFireDate = nextFireDate.plusMinutes(notificationDetails.everyInterval);
       nextFireDate = getClosestDayOfWeek(nextFireDate,notificationDetails.weekDay);
+          Log.e("minutet","this is scheduleTime After");
+      Log.e("minutet",nextFireDate.toString());
+      Log.e("minutet",notificationDetails.everyInterval.toString());
+
     }else if(notificationDetails.repeatInterval == RepeatInterval.Monthly){
           if(notificationDetails.monthlyType == MonthlyType.Date){
           nextFireDate = nextFireDate.withDayOfMonth(notificationDetails.dateOfMonth).plusMonths(notificationDetails.everyInterval);
@@ -1361,17 +1367,13 @@ public class FlutterLocalNotificationsPlugin
            nextFireDate =  adjustToNthDayOfMonth(nextFireDate,notificationDetails.monthWeek,notificationDetails.weekDay);
       }
     }
-    Log.e("minutet","this is Zone Id " + zoneId);
-    Log.e("minutet","this is now ");
-    Log.e("minutet",now.toString());
-    Log.e("minutet","this is scheduleTime before");
-    Log.e("minutet",nextFireDate.toString());
+
+
     while (nextFireDate.isBefore(now)) {
         // adjust to be a date in the future that matches the time
         nextFireDate = nextFireDate.plusDays(1);
       }
-    Log.e("minutet","this is scheduleTime After");
-      Log.e("minutet",nextFireDate.toString());
+
         return DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(nextFireDate);
   }
       public static ZonedDateTime getClosestDayOfWeek(ZonedDateTime dateTime, DayOfWeek targetDayOfWeek) {
